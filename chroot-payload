@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# This is the chroot payload that does stuff
+
+source common.sh
+
+info 'Installing build dependencies'
+sudo apt-get build-dep debian-installer
+
+info 'Grabbing debian-installer source'
+mkdir "$SRC_DIR" && cd "$SRC_DIR"
+if [[ $USE_APT_SRC == true ]]; then
+  apt-get source debian-installer && cd debian-installer
+else
+  git clone "$GIT_URL"
+  cd debian-installer
+  git checkout "$GIT_STABLE_TAG"
+fi
+
+info 'Running initial build'
+cd build
+fakeroot make build_netboot

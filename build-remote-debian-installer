@@ -2,7 +2,7 @@
 
 # build-remote-debian-installer
 # 
-# Grabs the stable installer from git or apt
+# Grabs the stable installer source from apt
 # and configures it to allow installation via
 # SSH remotely.
 
@@ -17,9 +17,9 @@ info 'Installing dependencies for chroot'
 sudo aptitude install binutils debootstrap
 
 info 'Creating chroot for build'
-sudo /usr/sbin/debootstrap --arch "$ARCH" wheezy di-chroot http://cdn.debian.net/debian
+sudo /usr/sbin/debootstrap --arch "$ARCH" jessie di-chroot http://cdn.debian.net/debian
 sudo mkdir -p di-chroot/opt/di-build
-sudo cp common.sh chroot-payload di-chroot/opt/di-build/
+sudo cp common.sh chroot-payload preseed.cfg di-chroot/opt/di-build/
 
 info 'Entering chroot...'
 sudo /usr/sbin/chroot di-chroot /opt/di-build/chroot-payload

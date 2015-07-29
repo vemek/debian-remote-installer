@@ -8,6 +8,6 @@ GIT_STABLE_TAG='20130613+deb7u2'
 ARCH='amd64'
 
 function info() {
-  echo '>>' "$@"
+  echo '>> '"$@"
 }
 

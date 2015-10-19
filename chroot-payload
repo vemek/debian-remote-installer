@@ -24,6 +24,5 @@ echo 'deb http://cdn.debian.net/debian jessie main/debian-installer' > sources.l
 echo 'PRESEED=/opt/di-build/preseed.cfg' > config/local
 echo 'USE_UDEBS_FROM=jessie' >> config/local
 sed -i '1s/^/#include network-console\n/' pkg-lists/netboot/amd64.cfg
-bash
 make reallyclean
 make build_netboot

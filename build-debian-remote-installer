@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# build-remote-debian-installer
+#
+# Grabs the stable installer source from apt
+# and configures it to allow installation via
+# SSH remotely.
+
+if [[ $_ != $0 ]]; then
+  mode='sourced'
+else
+  mode='script'
+fi
+
+source common.sh
+
+function check_privilege() {
+  if [[ $UID != 0 ]]; then
+    info 'This script needs root privileges to run, trying sudo'
+    sudo echo || exit 1
+  fi
+}
+
+function install_apt_dependencies() {
+  info 'Installing dependencies for chroot'
+  sudo aptitude install -y binutils debootstrap
+}
+
+function create_chroot() {
+  info 'Creating chroot for build'
+  sudo /usr/sbin/debootstrap --arch "$ARCH" jessie di-chroot http://cdn.debian.net/debian
+  sudo mkdir -p di-chroot/opt/di-build
+  sudo cp common.sh chroot-payload preseed.cfg di-chroot/opt/di-build/
+}
+
+function run_chroot_build() {
+  info 'Entering chroot...'
+  sudo /usr/sbin/chroot di-chroot /opt/di-build/chroot-payload
+}
+
+function main() {
+  check_privilege
+  install_apt_dependencies
+  create_chroot
+  run_chroot_build
+}
+
+if [[ $mode == 'script' ]]; then
+  main
+fi

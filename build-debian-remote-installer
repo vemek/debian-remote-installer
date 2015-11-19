@@ -38,11 +38,17 @@ function run_chroot_build() {
   sudo /usr/sbin/chroot di-chroot /opt/di-build/chroot-payload
 }
 
+function copy_build_artifacts() {
+  cp 'di-chroot/debian-installer/debian-installer-20150422+deb8u2/build/dest/netboot/debian-installer/amd64/linux' '.'
+  cp 'di-chroot/debian-installer/debian-installer-20150422+deb8u2/build/dest/netboot/debian-installer/amd64/initrd.gz' '.'
+}
+
 function main() {
   check_privilege
   install_apt_dependencies
   create_chroot
   run_chroot_build
+  copy_build_artifacts
 }
 
 if [[ $mode == 'script' ]]; then

@@ -28,7 +28,7 @@ function install_apt_dependencies() {
 
 function create_chroot() {
   info 'Creating chroot for build'
-  sudo /usr/sbin/debootstrap --arch "$ARCH" jessie di-chroot http://cdn.debian.net/debian
+  sudo /usr/sbin/debootstrap --arch "$ARCH" "$RELEASE" di-chroot http://cdn.debian.net/debian
   sudo mkdir -p di-chroot/opt/di-build
   sudo cp common.sh chroot-payload preseed.cfg di-chroot/opt/di-build/
 }
@@ -39,8 +39,8 @@ function run_chroot_build() {
 }
 
 function copy_build_artifacts() {
-  cp 'di-chroot/debian-installer/debian-installer-20150422+deb8u2/build/dest/netboot/debian-installer/amd64/linux' '.'
-  cp 'di-chroot/debian-installer/debian-installer-20150422+deb8u2/build/dest/netboot/debian-installer/amd64/initrd.gz' '.'
+  cp "di-chroot/debian-installer/debian-installer-$DI_VERSION/build/dest/netboot/debian-installer/amd64/linux" '.'
+  cp "di-chroot/debian-installer/debian-installer-$DI_VERSION/build/dest/netboot/debian-installer/amd64/initrd.gz" '.'
 }
 
 function main() {

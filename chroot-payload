@@ -6,8 +6,8 @@ source /opt/di-build/common.sh
 export LC_ALL=C
 
 info 'Updating package list'
-echo "deb http://cdn.debian.net/debian jessie main" > /etc/apt/sources.list
-echo "deb-src http://cdn.debian.net/debian jessie main" >> /etc/apt/sources.list
+echo "deb http://cdn.debian.net/debian $RELEASE main" > /etc/apt/sources.list
+echo "deb-src http://cdn.debian.net/debian $RELEASE main" >> /etc/apt/sources.list
 apt-get update
 
 info 'Installing build dependencies'
@@ -16,12 +16,12 @@ apt-get -y build-dep debian-installer
 
 info 'Grabbing debian-installer source'
 rm -rf "$SRC_DIR" && mkdir "$SRC_DIR" && cd "$SRC_DIR"
-apt-get source debian-installer && cd debian-installer*
+apt-get source debian-installer && cd "debian-installer-$DI_VERSION"
 
 info 'Running initial build'
 cd build
-echo 'deb http://cdn.debian.net/debian jessie main/debian-installer' > sources.list.udeb.local
+echo "deb http://cdn.debian.net/debian $RELEASE main/debian-installer" > sources.list.udeb.local
 echo 'PRESEED=/opt/di-build/preseed.cfg' > config/local
-echo 'USE_UDEBS_FROM=jessie' >> config/local
+echo "USE_UDEBS_FROM=$RELEASE" >> config/local
 make reallyclean
 make build_netboot

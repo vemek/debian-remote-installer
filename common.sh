@@ -2,8 +2,8 @@
 
 SRC_DIR='debian-installer'
 ARCH='amd64'
-RELEASE='stretch'
-DI_VERSION='20170615+deb9u2'
+RELEASE='buster'
+DI_VERSION='20190702'
 
 function info() {
   echo '>> '"$@"
